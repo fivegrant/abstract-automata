@@ -1,11 +1,11 @@
-{ mkDerivation, ansi-terminal, base, stdenv }:
+{ mkDerivation, ansi-terminal, base, containers, lib }:
 mkDerivation {
   pname = "abstract-automata";
   version = "0.1.0.0";
   src = ./.;
   isLibrary = false;
   isExecutable = true;
-  executableHaskellDepends = [ ansi-terminal base ];
-  description = "Simulate Turing Machines";
+  executableHaskellDepends = [ ansi-terminal base containers ];
+  description = "Simulate automata";
   license = "GPL";
 }

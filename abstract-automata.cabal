@@ -14,10 +14,10 @@ category:            Mathematics
 build-type:          Simple
 extra-source-files:  CHANGELOG.md, README.md
 
-executable astract-automata
+executable abstract-automata
   main-is:             Main.hs
-  -- other-modules:       App.Ant, App.Medium
+  other-modules:       App.Control, App.Alphabet
   -- other-extensions:
-  build-depends:       base, ansi-terminal
+  build-depends:       base, containers, ansi-terminal
   hs-source-dirs:      src
   default-language:    Haskell2010
