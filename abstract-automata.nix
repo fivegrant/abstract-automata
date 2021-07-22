@@ -6,6 +6,8 @@ mkDerivation {
   isLibrary = false;
   isExecutable = true;
   executableHaskellDepends = [ ansi-terminal base containers ];
+  enableLibraryProfiling = true;
+  enableExecutableProfiling = true;
   description = "Simulate automata";
   license = "GPL";
 }
