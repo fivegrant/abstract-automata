@@ -2,6 +2,7 @@
 
 ## Goals
 - Simulate Finite Discrete Automata
+- Set up Visualizer
 - Simulate Turing Machine
 - Encode Turing Machine
 
