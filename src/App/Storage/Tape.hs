@@ -2,13 +2,15 @@ module App.Storage.Tape where
 
 data Tape = 
   Single {
-    left :: String,
-    tapeHead :: Maybe Char,
-    right :: String
+    leftSide :: String,
+    tapeHead :: Char,
+    rightSide :: String
     } |
-  Multiple [Single]
+  Multiple [Tape]
 
+{-
 instance Read Tape where
   read = Single . decurry . words
+-}
 
 

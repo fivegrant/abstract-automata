@@ -7,11 +7,11 @@ import App.Transition
 -- Start state is always assumed to be q0
 -- Maybe.Nothing will be used in place of ϵ
 -- Instead
-data States = States { states :: Int, final :: [Int]} deriving (Eq)
+data States = States { stateCount :: Int, final :: [Int]} deriving (Eq)
 
 -- instance Show Storage where
 
-data Control storage = Control { 
+data Control = Control { 
     states :: States, 
     transition :: [Transition],
     terminals :: Alphabet,
@@ -20,11 +20,10 @@ data Control storage = Control {
 
 -- pg. 230 Instantaneous Descriptions shall be referred to as 'Instant'
 data Instant storage = Instant { 
-   control :: Control storage,
+   control :: Control,
    config :: (Int, storage) -- usually
    }
 
--- automataClass :: Control -> String
 -- eval :: Storage -> (Char, Storage)
 -- finish :: Instance -> Bool
 -- (|-) :: Instance -> Instance -> Bool
