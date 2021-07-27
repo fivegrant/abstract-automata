@@ -1,6 +1,6 @@
 module App.Transition where
 
-data Direction = Left | Right deriving (Eq, Ord)
+import App.Storage.Tape
 
 data Transition = 
     Finite {
@@ -8,19 +8,19 @@ data Transition =
       resultState :: Int
     } |
     Stacked {
-      fromStackState ::((Char, Char), Int),
+      fromStackState ::((Maybe Char, Maybe Char), Int),
       resultStackState :: (Maybe Char, Int)
     } |
     Cell {
-      fromCell :: (Char, Int),
-      toCell :: (Char, Direction, Int)
+      fromCell :: (Maybe Char, Int),
+      toCell :: (Maybe Char, Direction, Int)
     } deriving (Eq, Ord)
 
 concurrent :: Transition -> Transition -> Bool
 concurrent (Finite (a, b) _) (Finite (x, y) _) = (x == a) && (b == y)
 concurrent _ _ = False
 
-data AutomataStyle = Invalid | DFA | NFA | ENFA | PDA | TM | MTM 
+data AutomataStyle = Invalid | DFA | NFA | ENFA | PDA | TM 
                      deriving (Eq, Ord)
 
 style :: [Transition] -> AutomataStyle

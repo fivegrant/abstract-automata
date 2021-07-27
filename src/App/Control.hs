@@ -7,7 +7,7 @@ import App.Transition
 -- Start state is always assumed to be q0
 -- Maybe.Nothing will be used in place of ϵ
 -- Instead
-data States = States { stateCount :: Int, final :: [Int]} deriving (Eq)
+data States = States { stateCount :: Int, final :: [Int] } deriving (Eq)
 
 -- instance Show Storage where
 
@@ -24,9 +24,3 @@ data Instant storage = Instant {
    config :: (Int, storage) -- usually
    }
 
--- eval :: Storage -> (Char, Storage)
--- finish :: Instance -> Bool
--- (|-) :: Instance -> Instance -> Bool
--- (|-*) :: Instance -> Instance -> Bool
--- step :: Instance -> Instance
--- run :: Instance -> Instance
