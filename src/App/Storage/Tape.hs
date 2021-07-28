@@ -18,7 +18,7 @@ instance Storage Tape where
   shift (Tape left mid [Nothing]) Right = Tape (left ++ [mid]) Nothing [Nothing]
   shift (Tape left mid right) Right = Tape (left ++ [mid]) (head right) (tail right)
   shift (Tape [Nothing] mid right) Left = Tape [Nothing] Nothing (right)
-  shift (Tape [Nothing] mid right) Left = Tape [Nothing] Nothing (right)
+  shift (Tape left mid right) Left = Tape (init left) (last left)  (mid:right)
 
 initTape "" = Single [Nothing] Nothing [Nothing]
-initTape (x:xs) = Single [Nothing] (Maybe x) (map (\a -> Maybe a) xs )
+initTape (x:xs) = Single [Nothing] (Maybe x) (map (\a -> Maybe a) xs)
