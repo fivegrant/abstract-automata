@@ -7,12 +7,9 @@ import App.Transition
 -- Start state is always assumed to be q0
 -- Maybe.Nothing will be used in place of ϵ
 -- Instead
-data States = States { stateCount :: Int, final :: [Int] } deriving (Eq)
-
--- instance Show Storage where
 
 data Control = Control { 
-    states :: States, 
+    acceptingStates :: [Int], 
     transition :: [Transition],
     terminals :: Alphabet,
     nonterminals :: Alphabet
