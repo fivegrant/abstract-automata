@@ -8,38 +8,19 @@ data Transition =
       fromState :: (Maybe Char, Int),
       resultState :: Int
     } |
-    {-
-    Stacked {
-      fromStackState ::((Maybe Char, Maybe Char), Int),
-      resultStackState :: (Maybe Char, Int)
-    } |
-    -}
     Cell {
       fromCell :: (Maybe Char, Int),
       toCell :: (Maybe Char, Direction, Int)
     } deriving (Eq, Ord)
 
+(>>>) :: [Transition] -> (Maybe Char, Int) -> [Transition]
+(>>>) transitionTable incoming = filter match transitionTable
+                                 where match (Finite start _) = start == incoming
+                                       match (Cell start _) = start == incoming
+
 concurrent :: Transition -> Transition -> Bool
 concurrent (Finite (a, b) _) (Finite (x, y) _) = (x == a) && (b == y)
 concurrent _ _ = False
-
-transform :: [Transition] -> (Maybe Char, Int) -> [b]
-transform transitionTable (input, state) = foldl (findTransform) [] transitionTable
-          where target (x:[]) = (x, state)
-	        target (x:y:[]) = ((x,y),state)
-		incoming = target input
-	        findTransform [] _ = []
-                findTransform (Cell match result) xs = if match == incoming
-		                                       then result:xs
-						       else xs
-                findTransform (Stacked match result) xs = if match == incoming
-		                                       then result:xs
-						       else xs
-                findTransform (Finite match result) xs = if match == incoming
-		                                       then result:xs
-						       else xs
-
-
 
 data AutomataStyle = Invalid | DFA | NFA | ENFA | TM 
                      deriving (Eq, Ord)
@@ -47,7 +28,6 @@ data AutomataStyle = Invalid | DFA | NFA | ENFA | TM
 style :: [Transition] -> AutomataStyle
 style transitions 
                  | checkCell transitions = TM
-                 | checkStacked transitions = PDA
                  | not $ checkFinite transitions = Invalid
                  | scanEpsilon transitions = ENFA
                  | scanConcurrent transitions = NFA
@@ -72,4 +52,4 @@ style transitions
                                                 then True
                                                 else scanConcurrent xs
 validTable :: [Transition] -> Bool
-validTable = (!= Invalid) . style 
+validTable = (/= Invalid) . style 

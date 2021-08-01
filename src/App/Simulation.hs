@@ -4,41 +4,37 @@ import App.Alphabet
 import App.Transition
 import App.Control
 import App.Storage.Storage
-import App.Storage.Stack
 import App.Storage.Tape
 
--- Defaults
-(defaultInputSymbols, inputChecker) = symbolSpace ['a'...'z']
-(defaultTapeSymbols, tapeChecker) = symbolSpace ['X', 'Y', 'Z']
-
-initiateTM :: Control -> String -> (Instant Turing, (String -> Bool, String -> Bool))
+initiateTM :: Control -> String -> Instant Tape
 initiateTM controlHead input = Instant {
     control = controlHead, 
-    config = (0, initTape input)
+    config = (initTape input, 0)
   }
 
 step :: Storage a => Instant a -> [Instant a]
-step (Instant machine (state, storage)) = map updateInstant resulting
-             where incoming = (focus storage, state)
-                   resulting = (transition machine) `transform` incoming
-		   createInstant newChar newDirection newState = Instant machine (newState, (write newChar) `shift` newDirection)
-		   updateInstant (newChar, newDirection, newState) = createInstant newChar newDirection newState
-		   updateInstant (newChar, newState) = createInstant newChar Right newState
-		   updateInstant newState = createInstant Nothing Right newState
-		   
-halted :: Instant a -> Bool
-halted x = step x == []
+step instant = map toInstant $ transitionTable >>> incoming
+          where transitionTable = transitions $ control instant
+		(storage, currentState) = config instant 
+		incoming = (focus storage, currentState)
+		createInstant = Instant (control instant)
+                toInstant (Finite _ newState) = createInstant (shift storage Rightward, newState)
+                toInstant (Cell _ (symbol, direction, newState)) =  createInstant (shift (write symbol storage) direction, newState)
 
-accept :: Instant a -> Bool
-accept (Instant machine (state, storage)) = (elem state acceptingStates machine) && halted x
+halted :: Storage a => Instant a -> Bool
+halted x = null $ step x
+
+accept :: Storage a => Instant a -> Bool
+accept (Instant machine (storage, state)) = (elem state $ acceptingStates machine) && halted (Instant machine (storage, state))
 
 -- Currently only works deterministically (only grabs first element of each step)
-run :: Instant a -> Instant a
+run :: Storage a => Instant a -> Bool
 run x = if halted x
         then accept x
-	else run (x !! 0)
+        else run $ (!!0) $ step x
 
-solve = accept . run . initiateTM
+solve :: Control -> String -> Bool
+solve controlHead input = run $ initiateTM controlHead input
 
 -- eval :: Storage -> (Char, Storage)
 -- (|-) :: Instance -> Instance -> Bool

@@ -10,7 +10,7 @@ import App.Transition
 
 data Control = Control { 
     acceptingStates :: [Int], 
-    transition :: [Transition],
+    transitions :: [Transition],
     terminals :: Alphabet,
     nonterminals :: Alphabet
     } deriving (Eq)
@@ -18,6 +18,6 @@ data Control = Control {
 -- pg. 230 Instantaneous Descriptions shall be referred to as 'Instant'
 data Instant storage = Instant { 
    control :: Control,
-   config :: (Int, storage) -- usually
-   }
+   config :: (storage, Int) -- usually
+   } deriving (Eq)
 

@@ -20,8 +20,8 @@ executable abstract-automata
   other-modules:       App.Control, 
                        App.Alphabet, 
 		       App.Transition
+		       App.Simulation
 		       App.Storage.Storage
-		       App.Storage.Stack
 		       App.Storage.Tape
   -- other-extensions:
   build-depends:       base, 
