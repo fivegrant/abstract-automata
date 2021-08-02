@@ -36,6 +36,5 @@ run x = if halted x
 solve :: Control -> String -> Bool
 solve controlHead input = run $ initiateTM controlHead input
 
--- eval :: Storage -> (Char, Storage)
 -- (|-) :: Instance -> Instance -> Bool
 -- (|-*) :: Instance -> Instance -> Bool
